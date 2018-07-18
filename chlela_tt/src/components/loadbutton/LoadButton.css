@@ -1,0 +1,20 @@
+.LoadButtonDiv
+{
+  padding: 10px;
+  margin-top: 50px;
+}
+
+.LoadButton
+{
+  width: 100px;
+}
+
+.InputFile
+{
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
