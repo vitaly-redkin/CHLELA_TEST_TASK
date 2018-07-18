@@ -1,10 +1,10 @@
 /**
- * The main component (to contain everythingn else).
+ * The main component (to contain everything else).
  */
 
 import * as React from 'react';
-import {DropZone} from '../dropzone/DropZone';
-import {LoadButton} from '../loadbutton/LoadButton';
+import DropZone from '../dropzone/DropZone';
+import LoadButton from '../loadbutton/LoadButton';
 
 import * as styles from './Main.css';
 

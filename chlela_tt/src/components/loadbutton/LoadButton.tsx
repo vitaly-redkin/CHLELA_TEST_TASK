@@ -1,13 +1,24 @@
 /**
- * The componentwith button to load file manually.
+ * The component with button to load file manually.
  */
 
 import * as React from 'react';
-import * as styles from './LoadButton.css';
+import { connect } from 'react-redux';
+import { IApplicationState } from '../../store';
+import { actionCreators, IUploadedFileState } from '../../store/UploadedFileHandler';
+import {Consts} from '../../utils/Consts';
+import {acceptFile} from '../dropzone/DropZoneJS';
+import * as styles from '../loadbutton/LoadButton.css';
 
-export class LoadButton extends React.Component<{}, {}> {
+// At runtime, Redux will merge together...
+type LoadButtonProps =
+  (IUploadedFileState            // ... state we've requested from the Redux store
+    & typeof actionCreators     // ... plus action creators we've requested
+    & React.Props<{}>);
 
-  private _inputFileEl : HTMLInputElement;
+class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
+
+  private inputFileEl : HTMLInputElement;
 
   public render(): JSX.Element {
     return (
@@ -22,26 +33,50 @@ export class LoadButton extends React.Component<{}, {}> {
           type='file'
           className={styles.inputFile}
           ref={this.setInputFileRef}
-          accept='.png,.gif,.jpg,.jpeg'
+          accept={this.acceptedExtensions}
           multiple={false}
           onChange={this.onFileSelected}
           />
+
+          <div>
+            Name: {this.props.file ? this.props.file.name : 'Undefined'}
+          </div>
       </div>
     );
   }
 
-  public componentDidMount(): void {
+  private get acceptedExtensions() {
+    return Consts.ACCEPTED_MIME_TYPES.replace('image/', '.');
   }
 
   private handleClick = () : void => {
-    this._inputFileEl.click();
+    this.inputFileEl.click();
   }
 
   private setInputFileRef = (ref: HTMLInputElement) : void => {
-    this._inputFileEl = ref;
+    this.inputFileEl = ref;
   }
 
   private onFileSelected = (evt: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(evt!.target!.files);
+    if (evt && evt.target && evt.target.files && evt.target.files.length === 1) {
+      const file : File = evt.target.files[0];
+      if (acceptFile(file)) {
+        this.props.setUploadedFile(file);
+      } else {
+        alert('Invalid file: {file.name}');
+      }
+    }
   }
 }
+
+function mapStateToProps(state: IApplicationState) : IUploadedFileState {
+  return state.uploadedFile;
+}
+
+// Wire up the React component to the Redux store
+const LoadButton = connect(
+  mapStateToProps,
+  actionCreators
+)(LoadButtonInt);
+
+export default LoadButton;
