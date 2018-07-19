@@ -1,5 +1,5 @@
 /**
- * The component with button to load file manually.
+ * The component with button to load file manually
  */
 
 import * as React from 'react';
@@ -10,14 +10,17 @@ import {Consts} from '../../utils/Consts';
 import {acceptFile} from '../dropzone/DropZoneJS';
 import * as styles from '../loadbutton/LoadButton.css';
 
-// At runtime, Redux will merge together...
+// Component properties type
 type LoadButtonProps =
   (IUploadedFileState            // ... state we've requested from the Redux store
     & typeof actionCreators     // ... plus action creators we've requested
     & React.Props<{}>);
 
+/**
+ * The component with button to load file manually
+ */
 class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
-
+  // Ref to the file input
   private inputFileEl : HTMLInputElement;
 
   public render(): JSX.Element {
@@ -46,47 +49,64 @@ class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
           multiple={false}
           onChange={this.onFileSelected}
           />
-
-          <div>
-            Name: {this.props.file ? this.props.file.name : 'Undefined'}
-          </div>
       </div>
     );
   }
 
-  private get acceptedExtensions() {
+  /**
+   * Returns comma-separated list of accepted image file extensions
+   */
+  private get acceptedExtensions() : string {
     return Consts.ACCEPTED_MIME_TYPES.replace('image/', '.');
   }
 
+  /**
+   * Opens file selection dialog
+   */
   private loadFile = () : void => {
     this.inputFileEl.click();
   }
 
+  /**
+   * Clears uploaded file
+   */
   private clearFile = () : void => {
     this.props.clearUploadedFile();
   }
 
+  /**
+   * Sets a reference to the file input
+   *
+   * @param ref File input element
+   */
   private setInputFileRef = (ref: HTMLInputElement) : void => {
     this.inputFileEl = ref;
   }
 
+  /**
+   * Handler for the FileSeleced event
+   *
+   * @param evt Object with event details
+   */
   private onFileSelected = (evt: React.ChangeEvent<HTMLInputElement>): void => {
     if (evt && evt.target && evt.target.files && evt.target.files.length === 1) {
       const file : File = evt.target.files[0];
       if (acceptFile(file)) {
         this.props.setUploadedFile(file);
       } else {
-        alert('Invalid file: {file.name}');
+        alert(`This is not an image file: ${file.name}
+              \nOnly PNG, GIF, JPG and JPEG extensions supported`);
       }
     }
   }
 }
 
+// Redux mapStateToProps function
 function mapStateToProps(state: IApplicationState) : IUploadedFileState {
   return state.uploadedFile;
 }
 
-// Wire up the React component to the Redux store
+// Redux-Wrapped component
 const LoadButton = connect(
   mapStateToProps,
   actionCreators

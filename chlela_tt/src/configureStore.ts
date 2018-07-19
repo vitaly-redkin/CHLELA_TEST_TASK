@@ -1,5 +1,5 @@
 /**
- * Redux store configurator.
+ * Redux store configurator
  */
 
 import {
@@ -9,10 +9,18 @@ import {
 import reduxThunk from 'redux-thunk';
 import {IApplicationState, initialState, reducers } from './store';
 
+/**
+ * Types for the application Redux store
+ */
 export type StoreType = Store<IApplicationState, AnyAction>;
 
+/**
+ * Configures Redux store
+ *
+ * @returns application Redux store
+ */
 export function configureStore() : StoreType {
-/*
+/* Replaced with a single sattement below to avoid TSLint warnings about absent types
   const createStoreWithMiddleware = compose(
     applyMiddleware(reduxThunk),
     <S>(next: StoreEnhancerStoreCreator<S>) => next
@@ -27,6 +35,12 @@ export function configureStore() : StoreType {
   )(createStore)(buildRootReducer(reducers), initialState);
 }
 
+/**
+ * Builds the root reducer
+ *
+ * @param allReducers Application reducers
+ * @returns Root reducer combined from the application ones
+ */
 function buildRootReducer(allReducers: ReducersMapObject<IApplicationState, AnyAction>):
   Reducer<IApplicationState, AnyAction> {
   return combineReducers<IApplicationState>(allReducers);

@@ -1,5 +1,5 @@
 /**
- * The application "entry" file.
+ * The application "entry" file
  */
 
 import * as React from 'react';
