@@ -6,9 +6,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { IApplicationState } from '../../store';
 import { actionCreators, IUploadedFileState } from '../../store/UploadedFileHandler';
-import {Consts} from '../../utils/Consts';
-import {acceptFile} from '../dropzone/DropZoneJS';
-import * as styles from '../loadbutton/LoadButton.css';
+import {Consts} from '../../util/Consts';
+import {acceptFile} from '../../util/Util';
+import * as styles from './LoadButton.css';
 
 // Component properties type
 type LoadButtonProps =
@@ -19,7 +19,7 @@ type LoadButtonProps =
 /**
  * The component with button to load file manually
  */
-class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
+export class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
   // Ref to the file input
   private inputFileEl : HTMLInputElement;
 
@@ -27,6 +27,7 @@ class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
     return (
       <div className={styles.LoadButtonDiv}>
         <button
+          id={'loadButton'}
           className={styles.LoadButton}
           onClick={this.loadFile}
           >
@@ -34,6 +35,7 @@ class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
          </button>
 
          <button
+          id={'clearButton'}
           className={styles.LoadButton}
           onClick={this.clearFile}
           disabled={this.props.file === null}

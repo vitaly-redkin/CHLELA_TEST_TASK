@@ -7,10 +7,10 @@
  */
 
 import * as React from 'react';
-import accepts from 'attr-accept';
 import Dropzone from 'react-dropzone';
 import * as styles from './DropZoneJS.css';
-import {Consts} from '../../utils/Consts';
+import {Consts} from '../../util/Consts';
+import {acceptFile} from '../../util/Util';
 
 export class DropZoneJS extends React.Component {
   /**
@@ -39,16 +39,4 @@ export class DropZoneJS extends React.Component {
       </Dropzone>
     );
   }
-}
-
-/**
- * Checks if the file has a valid MIME type 
- * (using the same code from the attr-accept 
- * the third party component uses)
- * 
- * @param {File} file File to check for the MIME type validity
- * @returns true if file has a valid MIME type or false otherwise
- */
-export function acceptFile(file) {
-  return accepts(file, Consts.ACCEPTED_MIME_TYPES);
 }
