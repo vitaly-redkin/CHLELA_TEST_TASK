@@ -25,8 +25,17 @@ class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
       <div className={styles.LoadButtonDiv}>
         <button
           className={styles.LoadButton}
-          onClick={this.handleClick}>
+          onClick={this.loadFile}
+          >
           Load Image
+         </button>
+
+         <button
+          className={styles.LoadButton}
+          onClick={this.clearFile}
+          disabled={this.props.file === null}
+          >
+          Clear Image
          </button>
 
          <input
@@ -49,8 +58,12 @@ class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
     return Consts.ACCEPTED_MIME_TYPES.replace('image/', '.');
   }
 
-  private handleClick = () : void => {
+  private loadFile = () : void => {
     this.inputFileEl.click();
+  }
+
+  private clearFile = () : void => {
+    this.props.clearUploadedFile();
   }
 
   private setInputFileRef = (ref: HTMLInputElement) : void => {

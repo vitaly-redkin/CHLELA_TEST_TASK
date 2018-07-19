@@ -17,20 +17,22 @@ export const initialState: IUploadedFileState = {
 
 // -----------------
 // ACTIONS TYPES
-const ACTION_TYPE_UPLOADED_FILE_SET : string = '@UPLOADED_FILE/SET';
-const ACTION_TYPE_UPLOADED_FILE_CLEAR : string = '@UPLOADED_FILE/CLEAR';
+enum ActionTypeEnum {
+  SetUploadedFile = '@@UPLOADED_FILE/SET',
+  ClearUploadedFile = '@@UPLOADED_FILE/CLEAR'
+}
 
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
 // They do not themselves have any side-effects; they just describe something that is going to happen.
 // Use @typeName and isActionType for type detection that works even after serialization/deserialization.
 interface ISetUploadedFileAction {
-  type: typeof ACTION_TYPE_UPLOADED_FILE_SET;
+  type: ActionTypeEnum;
   file: File;
 }
 
 interface IClearUploadedFileAction {
-  type: typeof ACTION_TYPE_UPLOADED_FILE_CLEAR;
+  type: ActionTypeEnum;
 }
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
@@ -43,12 +45,12 @@ type KnownAction = ISetUploadedFileAction | IClearUploadedFileAction;
 export const actionCreators = {
   setUploadedFile: (file: File): AppThunkAction <KnownAction> =>
       (dispatch: (action: KnownAction) => void): void => {
-    dispatch({ type: ACTION_TYPE_UPLOADED_FILE_SET, file: file });
+    dispatch({ type: ActionTypeEnum.SetUploadedFile, file: file });
   },
 
   clearUploadedFile: (): AppThunkAction<KnownAction> =>
       (dispatch: (action: KnownAction) => void): void => {
-    dispatch({ type: ACTION_TYPE_UPLOADED_FILE_CLEAR });
+    dispatch({ type: ActionTypeEnum.ClearUploadedFile });
   }
 };
 
@@ -57,11 +59,11 @@ export const actionCreators = {
 export const reducer: Reducer<IUploadedFileState> =
   (state: IUploadedFileState, incomingAction: KnownAction): IUploadedFileState => {
     switch (incomingAction.type) {
-      case ACTION_TYPE_UPLOADED_FILE_SET:
+      case ActionTypeEnum.SetUploadedFile:
         const action: ISetUploadedFileAction = <ISetUploadedFileAction> incomingAction;
 
         return { ...state, file: action.file };
-      case ACTION_TYPE_UPLOADED_FILE_CLEAR:
+      case ActionTypeEnum.ClearUploadedFile:
         return { ...state, file: null };
       default:
         // Do nothing - the final return will work
