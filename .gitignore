@@ -59,3 +59,5 @@ typings/
 
 # next.js build output
 .next
+chlela_tt/src/components/__tests__/LoadButton.spec.js2
+chlela_tt/src/components/__tests__/Main.test.js2
