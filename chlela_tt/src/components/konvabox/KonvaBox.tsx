@@ -29,7 +29,7 @@ interface IKonvaBoxState {
 /**
  * Component to show the loaded image using Konva
  */
-class KonvaBoxInt extends React.Component<KonvaBoxProps, IKonvaBoxState> {
+class KonvaBox extends React.Component<KonvaBoxProps, IKonvaBoxState> {
 
   /**
    * Property to show the current file name (or a "welcome: message).
@@ -75,7 +75,7 @@ class KonvaBoxInt extends React.Component<KonvaBoxProps, IKonvaBoxState> {
             y={this.state.imageY}
             width={this.state.imageWidth}
             height={this.state.imageHeight}
-            />
+          />
         ) :
         null);
 
@@ -89,7 +89,8 @@ class KonvaBoxInt extends React.Component<KonvaBoxProps, IKonvaBoxState> {
               y={15}
               fontSize={20}
               fill={'#ccc'}
-              ref={this.setTextRef}/>
+              ref={this.setTextRef}
+            />
             {imageMarkup}
           </Layer>
         </Stage>
@@ -254,9 +255,7 @@ function mapStateToProps(state: IApplicationState) : IUploadedFileState {
 }
 
 // Redux-Wrapped component
-const KonvaBox = connect(
+export default connect(
   mapStateToProps,
   actionCreators
-)(KonvaBoxInt);
-
-export default KonvaBox;
+)(KonvaBox);

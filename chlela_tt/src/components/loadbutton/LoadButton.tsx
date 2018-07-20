@@ -19,7 +19,7 @@ type LoadButtonProps =
 /**
  * The component with button to load file manually
  */
-export class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
+export class LoadButton extends React.Component<LoadButtonProps, {}> {
   // Ref to the file input
   private inputFileEl : HTMLInputElement;
 
@@ -30,27 +30,27 @@ export class LoadButtonInt extends React.Component<LoadButtonProps, {}> {
           id={'loadButton'}
           className={styles.LoadButton}
           onClick={this.loadFile}
-          >
+        >
           Load Image
-         </button>
+        </button>
 
-         <button
+        <button
           id={'clearButton'}
           className={styles.LoadButton}
           onClick={this.clearFile}
           disabled={this.props.file === null}
-          >
+        >
           Clear Image
-         </button>
+        </button>
 
-         <input
+        <input
           type='file'
           className={styles.inputFile}
           ref={this.setInputFileRef}
           accept={this.acceptedExtensions}
           multiple={false}
           onChange={this.onFileSelected}
-          />
+        />
       </div>
     );
   }
@@ -109,9 +109,7 @@ function mapStateToProps(state: IApplicationState) : IUploadedFileState {
 }
 
 // Redux-Wrapped component
-const LoadButton = connect(
+export default connect(
   mapStateToProps,
   actionCreators
-)(LoadButtonInt);
-
-export default LoadButton;
+)(LoadButton);

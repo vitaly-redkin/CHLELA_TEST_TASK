@@ -17,7 +17,7 @@ type DropZoneProps =
 /**
  * The TypeScript and Redux wrapper around the DropZoneJS component
  */
-class DropZoneInt extends React.Component<DropZoneProps, {}> {
+class DropZone extends React.Component<DropZoneProps, {}> {
 
   public render(): JSX.Element {
     return (
@@ -32,7 +32,7 @@ class DropZoneInt extends React.Component<DropZoneProps, {}> {
    *
    * @param file File user dropped on the drop zone
    */
-  private onFileDropped = (file: File) : void => {
+  public onFileDropped = (file: File) : void => {
     this.props.setUploadedFile(file);
   }
 }
@@ -43,9 +43,7 @@ function mapStateToProps(state: IApplicationState) : IUploadedFileState {
 }
 
 // Redux-Wrapped component
-const DropZone = connect(
+export default connect(
   mapStateToProps,
   actionCreators
-)(DropZoneInt);
-
-export default DropZone;
+)(DropZone);
