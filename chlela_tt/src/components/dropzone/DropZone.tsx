@@ -1,39 +1,57 @@
 /**
- * The TypeScript and Redux wrapper around the DropZoneJS component
+ * The component to serve as a zone to drop the files to
+ *
+ * Uses third-party component (react-dropzone)
  */
 
 import * as React from 'react';
+import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { IApplicationState } from '../../store';
 import { actionCreators, IUploadedFileState } from '../../store/UploadedFileHandler';
-import {DropZoneJS} from './DropZoneJS';
+import {Consts} from '../../util/Consts';
+import {acceptFile} from '../../util/Util';
+import * as styles from './DropZone.css';
 
 // Component properties type
 type DropZoneProps =
-  (IUploadedFileState           // ... state we've requested from the Redux store
-    & typeof actionCreators     // ... plus action creators we've requested
+  (IUploadedFileState
+    & typeof actionCreators
     & React.Props<{}>);
 
 /**
- * The TypeScript and Redux wrapper around the DropZoneJS component
+ * The component to serve as a zone to drop the files to
+ *
+ * Uses third-party component (react-dropzone)
  */
-class DropZone extends React.Component<DropZoneProps, {}> {
+export class DropZone extends React.Component<DropZoneProps, {}> {
 
   public render(): JSX.Element {
     return (
-      <DropZoneJS onFileDropped={this.onFileDropped}>
+      <Dropzone
+        onDropAccepted={this.onDropAccepted}
+        accept={Consts.ACCEPTED_MIME_TYPES}
+        disableClick={true}
+        multiple={false}
+        className={styles.dropzone}
+        activeClassName={styles.active}
+        acceptClassName={styles.accepted}
+        rejectClassName={styles.rejected}
+      >
         {this.props.children}
-      </DropZoneJS>
+      </Dropzone>
     );
   }
 
   /**
-   * Handler for the "fileDropped" event
+   * Handler for the dropAccepted event
    *
-   * @param file File user dropped on the drop zone
+   * @param files Files user dropped on the drop zone. The dropzone is configured to allow only single files to be dropped.
    */
-  public onFileDropped = (file: File) : void => {
-    this.props.setUploadedFile(file);
+  public onDropAccepted = (files: File[]) => {
+    if (files.length === 1 && acceptFile(files[0])) {
+      this.props.setUploadedFile(files[0]);
+    }
   }
 }
 
